@@ -1,38 +1,45 @@
 // server/index.js
-import express from "express";
-import mongoose from "mongoose";
-import cors from "cors";
-import dotenv from "dotenv"
-import User from "./models/User.js";
+import express from 'express';
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+/*const bodyParser = require('body-parser');*/
+import tripRoutes from './routes/trips.js'
 
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5002;
-const MONGO_URI = process.env.MONGO_URI 
+const PORT = process.env.PORT || 5000;
 
-app.use(cors());
-app.use(express.json());
+// Middleware
+/* app.use(bodyParser.json()); */
+
+app.use(express.json())
+// Routes
+app.use('/api/trips', tripRoutes);
+
+// MongoDB connection
+mongoose
+  .connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('MongoDB connected'))
+  .catch((error) => console.error('MongoDB connection error:', error));
+
+// Start the server
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 
-mongoose.connect(MONGO_URI).then (() =>{
-  console.log("Database connected.")
-  app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-  });
-  
-})
-.catch((err) => {
-console.error('Error connecting to MongoDB:', err.message);
-});
 
 
 
-// Simple test route
-app.get('/', (req, res) => {
-  res.send('Hello from the Lincoln Memorial backend!!!');
-});
 
+
+
+
+
+
+
+
+
+/*
 app.post('/api/login', async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -65,5 +72,5 @@ app.post('/api/login', async (req, res) => {
       .json({ message: 'Internal Server Error', error: error.message });
   }
 });
-
+*/
 

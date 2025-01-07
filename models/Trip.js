@@ -1,24 +1,24 @@
 
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const tripSchema = new mongoose.Schema({
-  Name: {    
-    type: String, 
-    required: true 
+  destination: {
+    type: String,
+    required: [true, 'Destination is required.'],
   },
   visitDate: {
     type: Date,
-    required: true
+    required: [true, 'Visit date is required.'],
   },
   numberOfPeople: {
     type: Number,
-    required: true
+    required: [true, 'Number of people is required.'],
+    min: [1, 'Number of people must be at least 1.'],
   },
-  notes: {
+  description: {
     type: String,
-    default: ''
   },
- 
 });
 
-export default mongoose.model("Trip", tripSchema);
+const Trip = mongoose.model('Trip', tripSchema);
+export default Trip;
