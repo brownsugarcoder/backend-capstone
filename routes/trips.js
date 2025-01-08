@@ -2,10 +2,16 @@ import express from 'express';
 const router = express.Router();
 import Trip from '../models/Trip.js';
 
-
+router.options('*', (req, res) => {
+  res.header('Access-Control-Allow-Origin', 'http://localhost:5173'); // Your frontend URL
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Custom-Header');
+  res.sendStatus(204); // Send no content, just status
+});
 
 // Create a trip
 router.post('/', async (req, res) => {
+  console.log('recieved post request',req.body)
   try {
     const { destination, visitDate, numberOfPeople, description } = req.body;
 

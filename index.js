@@ -2,14 +2,29 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import cors from 'cors';
 /*const bodyParser = require('body-parser');*/
 import tripRoutes from './routes/trips.js'
+
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+const corsOptions = {
+  origin: 'http://localhost:5173', // Replace with your frontend URL
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow only the methods you need
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Custom-Header','sec-ch-ua', 'sec-ch-ua-mobile', 'sec-ch-ua-platform', 'user-agent'],
+   // Include custom headers
+  
+  preflightContinue: false, // Don't pass the preflight to the next handler
+  optionsSuccessStatus: 204, // Return a success status for preflight
+};
 
+app.use(cors(corsOptions));
+
+app.options('*', cors(corsOptions)); 
+ 
 // Middleware
 /* app.use(bodyParser.json()); */
 
